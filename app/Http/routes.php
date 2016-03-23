@@ -15,4 +15,6 @@ $app->get('/', function () use ($app) {
     return $app->version();
 });
 
-$app->post('/appraisal', 'InsuranceController@getAppraisal');
+$app->post('/appraisal', 'InsuranceController@receiveAppraisal');
+
+$app->post('/muncode', 'InsuranceController@receiveMunCode');
