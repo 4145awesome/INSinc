@@ -12,7 +12,7 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return "INSinc version 0.1.0, Running ". $app->version();
 });
 
 $app->post('/appraisal', 'InsuranceController@receiveAppraisal');
