@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use GuzzleHttp as Guzzle;
+use GuzzleHttp\Client;
 
 class InsuranceController extends Controller
 {
@@ -37,8 +36,9 @@ class InsuranceController extends Controller
         }else{
             app('db')->table('mundata')->insert(['mlsid' => $mlsid, 'munCode' => $munCode]);
         }
-        if($this->checkCompleted($mlsid)){
-            return response()->json(["error" => false, "forwardStatus" => "sent", "waitingOn" => []]);
+        $completed = $this->checkCompleted($mlsid);
+        if($completed){
+            return response()->json(["error" => false, "forwardStatus" => "sent", "response" => $completed]);
         }else{
             return response()->json(["error" => false, "forwardStatus" => "waiting", "waitingOn" => ["Appraisal"]]);
         }
@@ -49,11 +49,19 @@ class InsuranceController extends Controller
         $munCode = app('db')->table('mundata')->select('muncode')->where('mlsid', $mlsid)->first();
         if($appraisal && $munCode){
             if($debug){
-                return response()->json(['MortID' => $appraisal->mortid, 'insuredValue' => 523000, 'deductible' => 10000, 'name' => 'Bob']);
+                return ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000'];
             }else {
-                Request::create($this->mbrUrl, 'POST', ['MortID' => $appraisal->mortid, 'insuredValue' => 523000, 'deductible' => 10000, 'name' => 'Bob']);
+                $client = new Client();
+                $response = $client->request('POST', $this->mbrUrl, ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000']);
+                if($response->getStatusCode() != 200){
+                    $error = true;
+                    $body = $response->getReasonPhrase();
+                }else{
+                    $error = false;
+                    $body = $response->getBody();
+                }
+                return ["error" => $error, "response" => json_decode((string) $body)];
             }
-            return true;
         }else{
             return false;
         }
