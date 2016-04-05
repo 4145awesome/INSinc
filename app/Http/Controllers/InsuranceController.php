@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 class InsuranceController extends Controller
 {
 
-    private $mbrUrl = "https://mbr.laboratory.cf";
+    private $mbrUrl = "http://ec2-54-175-127-10.compute-1.amazonaws.com:3000/broker_ins";
 
     public function receiveAppraisal(Request $request){
         $mlsid = $request->input('mlsid');
@@ -52,7 +52,7 @@ class InsuranceController extends Controller
                 return ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000'];
             }else {
                 $client = new Client();
-                $response = $client->request('POST', $this->mbrUrl, ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000']);
+                $response = $client->request('POST', $this->mbrUrl, ['json' => ['Mort_id' => 'tHw603603', 'insured_value' => '123456', 'deductible' => '654321']]);
                 if($response->getStatusCode() != 200){
                     $error = true;
                     $body = $response->getReasonPhrase();
