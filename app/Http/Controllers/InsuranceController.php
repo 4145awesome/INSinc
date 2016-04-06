@@ -75,8 +75,6 @@ class InsuranceController extends Controller
         //check the db for the mortid in question
         $quote = app('db')->table('quotes')->where('mortid', $mortID)->first();
 
-        var_dump($quote);
-
         //if we have all the data and haven't attempted to send before
         if($quote->mortid && $quote->appraisal && $quote->muncode && !$quote->sent) {
             //prepare the data
@@ -108,7 +106,7 @@ class InsuranceController extends Controller
 
                 return ["error" => $error, "response" => $body];
             }
-        }else if($quote["sent"]){ //we've already sent this data
+        }else if($quote->sent){ //we've already sent this data
             return ["error" => true, "response" => "Data for this mortID has already been sent"];
         }else{ //we're missing data
             return false;
