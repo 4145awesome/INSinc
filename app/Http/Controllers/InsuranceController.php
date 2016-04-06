@@ -8,7 +8,7 @@ use GuzzleHttp\Client;
 class InsuranceController extends Controller
 {
 
-    private $mbrUrl = "https://mbr.laboratory.cf";
+    private $mbrUrl = "http://ec2-54-175-127-10.compute-1.amazonaws.com:3000/broker_ins";
 
     public function receiveAppraisal(Request $request){
         $mlsid = $request->input('mlsid');
