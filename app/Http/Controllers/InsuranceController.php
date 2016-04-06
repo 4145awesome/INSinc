@@ -29,7 +29,7 @@ class InsuranceController extends Controller
         }
 
         //check to see if we have all data, send if so
-        $completed = $this->checkCompleted($mlsid);
+        $completed = $this->checkCompleted($mortID);
 
         if($completed){ //if we tried to send
             return response()->json(["error" => $completed["error"], "forwardStatus" => "sent", "response" => $completed]);
@@ -57,7 +57,7 @@ class InsuranceController extends Controller
         }
 
         //check to see if we have all data, send if so
-        $completed = $this->checkCompleted($mlsid);
+        $completed = $this->checkCompleted($mortID);
 
         if($completed){ //if we tried to send
             return response()->json(["error" => $completed["error"], "forwardStatus" => "sent", "response" => $completed]);
