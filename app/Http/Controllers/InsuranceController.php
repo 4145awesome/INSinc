@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Client;
+use GuzzleHttp;
 
 class InsuranceController extends Controller
 {
@@ -52,7 +52,7 @@ class InsuranceController extends Controller
             if($debug){
                 return ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000'];
             }else {
-                $client = new Client();
+                $client = new GuzzleHttp\Client();
                 try {
                     $response = $client->request('POST', $this->mbrUrl, ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000']);
                     if($response->getStatusCode() != 200){
@@ -62,7 +62,7 @@ class InsuranceController extends Controller
                         $error = false;
                         $body = json_decode((string) $response->getBody());
                     }
-                }catch(ConnectException $e){
+                }catch(GuzzleHttp\ConnectException $e){
                     $error = true;
                     $body = "Could not establish connection to MBR";
                 }
