@@ -73,7 +73,7 @@ class InsuranceController extends Controller
      */
     private function checkCompleted($mortID, $debug = false){
         //check the db for the mortid in question
-        $quote = app('db')->table('quote')->where('mortid', $mortID)->first();
+        $quote = app('db')->table('quotes')->where('mortid', $mortID)->first();
 
         //if we have all the data and haven't attempted to send before
         if($quote->mortid && $quote->appraisal && $quote->muncode && !$quote->sent) {
