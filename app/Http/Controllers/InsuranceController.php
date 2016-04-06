@@ -53,7 +53,7 @@ class InsuranceController extends Controller
         if($exists){ //it exists, so update it
             app('db')->table('quotes')->where('mortid', $mortID)->update(['mlsid' => $mlsid, 'munCode' => $munCode]);
         }else{ //it doesn't exist -  create it
-            app('db')->table('quotes')->insert(['mortid', $mortID, 'mlsid' => $mlsid, 'munCode' => $munCode]);
+            app('db')->table('quotes')->insert(['mortid' => $mortID, 'mlsid' => $mlsid, 'munCode' => $munCode]);
         }
 
         //check to see if we have all data, send if so
