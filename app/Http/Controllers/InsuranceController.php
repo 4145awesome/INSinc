@@ -106,7 +106,7 @@ class InsuranceController extends Controller
 
                 return ["error" => $error, "response" => $body];
             }
-        }else if($quote->sent){ //we've already sent this data
+        }else if($quote["sent"]){ //we've already sent this data
             return ["error" => true, "response" => "Data for this mortID has already been sent"];
         }else{ //we're missing data
             return false;
