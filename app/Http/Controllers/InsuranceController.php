@@ -62,7 +62,7 @@ class InsuranceController extends Controller
                         $error = false;
                         $body = json_decode((string) $response->getBody());
                     }
-                }catch(GuzzleHttp\ConnectException $e){
+                }catch(\Exception $e){
                     $error = true;
                     $body = "Could not establish connection to MBR";
                 }
