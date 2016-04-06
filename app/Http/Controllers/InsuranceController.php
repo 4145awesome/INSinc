@@ -21,7 +21,7 @@ class InsuranceController extends Controller
         $mortID = $request->input('mortID');
         
         //check to see if we have data for this property already
-        $exists = app('db')->table('appraisal')->where('mortid', $mortID)->first();
+        $exists = app('db')->table('quotes')->where('mortid', $mortID)->first();
         if($exists){ //it exists, so update it
             app('db')->table('quotes')->where('mlsid', $mlsid)->update(['mortID' => $mortID, 'mlsid' => $mlsid, 'appraisal' => $appraisal]);
         }else{ //it doesn't exist - create it
