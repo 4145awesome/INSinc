@@ -20,8 +20,9 @@ class InsuranceController extends Controller
         }else{
             app('db')->table('appraisal')->insert(['mlsid' => $mlsid, 'mortID' => $mortID, 'appraisal' => $appraisal]);
         }
-        if($this->checkCompleted($mlsid)){
-            return response()->json(["error" => false, "forwardStatus" => "sent", "waitingOn" => []]);
+        $completed = $this->checkCompleted($mlsid);
+        if($completed){
+            return response()->json(["error" => false, "forwardStatus" => "sent", "response" => $completed]);
         }else{
             return response()->json(["error" => false, "forwardStatus" => "waiting", "waitingOn" => ["munCode"]]);
         }
@@ -52,15 +53,21 @@ class InsuranceController extends Controller
                 return ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000'];
             }else {
                 $client = new Client();
-                $response = $client->request('POST', $this->mbrUrl, ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000']);
-                if($response->getStatusCode() != 200){
+                try {
+                    $response = $client->request('POST', $this->mbrUrl, ['first_name' => 'Kevin', 'last_name' => 'Gee', 'Mort_id' => 'kMF90909b', 'insured_value' => '13600', 'deductible' => '2000']);
+                    if($response->getStatusCode() != 200){
+                        $error = true;
+                        $body = $response->getReasonPhrase();
+                    }else{
+                        $error = false;
+                        $body = json_decode((string) $response->getBody());
+                    }
+                }catch(ConnectException $e){
                     $error = true;
-                    $body = $response->getReasonPhrase();
-                }else{
-                    $error = false;
-                    $body = $response->getBody();
+                    $body = "Could not establish connection to MBR";
                 }
-                return ["error" => $error, "response" => json_decode((string) $body)];
+
+                return ["error" => $error, "response" => $body];
             }
         }else{
             return false;
