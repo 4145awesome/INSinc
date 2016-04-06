@@ -22,7 +22,7 @@ class InsuranceController extends Controller
         }
         $completed = $this->checkCompleted($mlsid);
         if($completed){
-            return response()->json(["error" => false, "forwardStatus" => "sent", "response" => $completed]);
+            return response()->json(["error" => $completed["error"], "forwardStatus" => "sent", "response" => $completed]);
         }else{
             return response()->json(["error" => false, "forwardStatus" => "waiting", "waitingOn" => ["munCode"]]);
         }
@@ -39,7 +39,7 @@ class InsuranceController extends Controller
         }
         $completed = $this->checkCompleted($mlsid);
         if($completed){
-            return response()->json(["error" => false, "forwardStatus" => "sent", "response" => $completed]);
+            return response()->json(["error" => $completed["error"], "forwardStatus" => "sent", "response" => $completed]);
         }else{
             return response()->json(["error" => false, "forwardStatus" => "waiting", "waitingOn" => ["Appraisal"]]);
         }
