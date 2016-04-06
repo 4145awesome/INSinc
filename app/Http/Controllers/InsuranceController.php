@@ -45,14 +45,15 @@ class InsuranceController extends Controller
     public function receiveMunCode(Request $request){
         //get data from the request
         $mlsid = $request->input('mlsid');
+        $mortID = $request->input('mortID');
         $munCode = $request->input('munCode');
 
         //check to see if we have data for this property already
-        $exists = app('db')->table('mundata')->where('mlsid', $mlsid)->first();
+        $exists = app('db')->table('quotes')->where('mortid', $mortID)->first();
         if($exists){ //it exists, so update it
-            app('db')->table('mundata')->where('mlsid', $mlsid)->update(['munCode' => $munCode]);
+            app('db')->table('quotes')->where('mortid', $mortID)->update(['mlsid' => $mlsid, 'munCode' => $munCode]);
         }else{ //it doesn't exist -  create it
-            app('db')->table('mundata')->insert(['mlsid' => $mlsid, 'munCode' => $munCode]);
+            app('db')->table('quotes')->insert(['mortid', $mortID, 'mlsid' => $mlsid, 'munCode' => $munCode]);
         }
 
         //check to see if we have all data, send if so
